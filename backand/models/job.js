@@ -6,8 +6,51 @@ const jobSchema = new Schema({
     title:{
         type:String,
         required: true,
+    },
+    description:{
+        type:String,
+        required:true,
+    },
+
+    // Full Time, Part Time, Work From Home
+    jobType:{
+        type:String,
+        required:true,
+    },
+
+    skills:{
+        type:String,
+        required:true,
+    },
+
+    // 1 Month
+    duration:{
+        type:String,
+        required:true,
+    },
+
+    //  Application Deadline
+    deadline:{
+        type:Date,
+        required:true,
+    },
+
+    // Max No. Of Applicants
+    applicants:{
+        type:Number,
+        required:true,
+    },
+
+    // Available Position
+    position:{
+        type:Number,
+        required:true,
     }
 })
+
+const job = mongoose.model('job', jobSchema);
+job.createIndexes();
+module.exports = job;
 
 
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require("../models/User");
+const Job = require("../models/Job");
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 // const fetchuser = require('../middleware/fetchuser');
