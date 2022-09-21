@@ -116,7 +116,7 @@ router.post('/login', [
         //res.json({authToken});
         localStorage.setItem('token', authToken);
         req.body.authtoken = authToken;
-        res.json(req.body.authtoken);
+        res.json({'success' : req.body.authtoken});
     }
     catch(error){
         console.error(error.message);

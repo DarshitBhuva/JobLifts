@@ -1,7 +1,9 @@
 import React from 'react'
 import intro from './assets/intro.png'
+import Content from './Content'
 export default function Header() {
   return (
+    <>
     <header>
 
         <div className="container mt-5 text-center">
@@ -54,7 +56,12 @@ export default function Header() {
                 </div>
             </div>
         </div>
-
+        
     </header>
+ 
+    <Content />
+
+    </>
+
   )
 }

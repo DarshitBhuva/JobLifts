@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 export default function Navbar(props) {
     return (
         <div>
@@ -40,8 +39,9 @@ export default function Navbar(props) {
                                 <a href="/" className="btn btn-sm btn-primary mt-2 mx-2" Style="height: 32px; width: 30%;">Search</a>
                         </form>
 
-                        <button className="btn btn-sm btn-primary mx-2">Sign in</button>
+                        <a href='/signin' className="btn btn-sm btn-primary mx-2">Sign in</a>
                         <a href="/signup" className="btn btn-sm btn-primary mx-2">Sign up</a>
+                        <p></p>
                     </div>
                 </div>
             </nav>

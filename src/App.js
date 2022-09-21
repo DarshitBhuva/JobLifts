@@ -6,8 +6,9 @@ import Navbar from './components/Navbar';
 import Header from './components/Header';
 import Content from './components/Content';
 import Footer from './components/Footer';
+import Signin from './components/Signin';
 
-import { BrowserRouter as Router, Routes, Route, BrowserRouter } from "react-router-dom"
+import { BrowserRouter , Routes, Route } from "react-router-dom"
 
 
 function App() {
@@ -21,13 +22,8 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Header />}/>
-            </Routes>
-            <Routes>
-              <Route path="/" element={<Content />}/>
-            </Routes>
-
-            <Routes>
               <Route path="/signup" element={<Content />}/>
+              <Route path='/signin' element={<Signin />}/>
             </Routes>
           </BrowserRouter>
         </div>
