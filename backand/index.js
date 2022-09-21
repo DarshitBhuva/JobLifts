@@ -10,8 +10,8 @@ app.get('/', (req, res) => {
 
 app.use(express.json());
 
-app.use("/api/auth", require("./routes/auth"))
-// app.use("/api/notes", require("./routes/notes"))
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/jobs", require("./routes/jobs"));
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)

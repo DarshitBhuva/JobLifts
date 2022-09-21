@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const {Schema} = mongoose;
 
 const jobSchema = new Schema({
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    },
 
     title:{
         type:String,
@@ -10,6 +14,10 @@ const jobSchema = new Schema({
     description:{
         type:String,
         required:true,
+    },
+    salary:{
+       type:Number,
+       required:true,
     },
 
     // Full Time, Part Time, Work From Home

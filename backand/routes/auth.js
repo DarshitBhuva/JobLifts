@@ -1,6 +1,9 @@
 const express = require('express');
+const LocalStorage = require('node-localStorage').LocalStorage;
+var localStorage = new LocalStorage('./scratch');
 const User = require("../models/User");
 const Job = require("../models/Job");
+var fetchuser = require("../middleware/fetchuser");
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 // const fetchuser = require('../middleware/fetchuser');
@@ -9,6 +12,8 @@ var jwt = require('jsonwebtoken');
 const JWT_SECRET = 'Darshitisagoodboy';
 
 const router = express.Router();
+
+const token = "";
 
 // Create a new user
 router.post('/createuser', [
@@ -108,7 +113,10 @@ router.post('/login', [
         }
 
         const authToken = jwt.sign(data, JWT_SECRET);
-        res.json({authToken});
+        //res.json({authToken});
+        localStorage.setItem('token', authToken);
+        req.body.authtoken = authToken;
+        res.json(req.body.authtoken);
     }
     catch(error){
         console.error(error.message);
@@ -117,3 +125,4 @@ router.post('/login', [
 })
 
 module.exports = router
+// module.exports = token
