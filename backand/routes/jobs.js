@@ -106,4 +106,30 @@ router.post('/updatejob/:id', fetchuser, async (req, res) => {
     }
     
 })
+
+// Delete Jobs
+
+router.delete('/deletejob/:id', fetchuser , async(req, res)=>{
+    try{
+
+        let job = await Job.findById(req.params.id);
+
+        if(!job){
+            return res.status(404).send("Not Found");
+        }
+
+        if(job.user.toString() != req.user.id)
+        {
+            return res.status(401).send("Not allowed");
+        }
+
+        job = await Job.findByIdAndDelete(req.params.id);
+        res.json({"Success": "Job has been Deleted Successfully", job: job});
+
+    }
+    catch(error){
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+})
 module.exports = router

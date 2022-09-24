@@ -23,7 +23,7 @@ export default function Signin() {
         console.log(json);
         if(json.success){
             
-            navigate("/")
+            navigate("/fetchjobs")
         }
         else{
             alert("Invalid Credentials");

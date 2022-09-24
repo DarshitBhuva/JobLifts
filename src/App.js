@@ -7,8 +7,9 @@ import Header from './components/Header';
 import Content from './components/Content';
 import Footer from './components/Footer';
 import Signin from './components/Signin';
-
+import React from 'react';
 import { BrowserRouter , Routes, Route } from "react-router-dom"
+import Jobs from './components/Jobs';
 
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
               <Route path="/" element={<Header />}/>
               <Route path="/signup" element={<Content />}/>
               <Route path='/signin' element={<Signin />}/>
+              <Route path='/fetchjobs' element={<Jobs />}/>
+
             </Routes>
           </BrowserRouter>
         </div>
