@@ -2,7 +2,7 @@ const express = require('express');
 const LocalStorage = require('node-localStorage').LocalStorage;
 var localStorage = new LocalStorage('./scratch');
 const User = require("../models/User");
-const Job = require("../models/Job");
+
 var fetchuser = require("../middleware/fetchuser");
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');

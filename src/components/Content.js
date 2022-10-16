@@ -1,6 +1,40 @@
-import React from 'react'
+
+import React, { useState } from 'react'
+import { useEffect } from 'react';
 
 export default function Content() {
+    const [jobs, setJobs] = useState([]);
+
+    const fetchalljobs = async () => {
+
+        await fetch('http://localhost:5000/api/jobs/fetchalljobs', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }).then(response => {
+            return response.json();
+        }).then((data) => setJobs(data))
+    }
+
+    const [ApplyButtonColor, SetApplyButtonColor] = useState("btn-primary");
+    // const [ApplyButttonText, SetApplyButtonText] = useState("Apply Now");
+    const [jobid, SetJobId] = useState("");
+    const ApplyJobs = async (id) => {
+
+        SetJobId(id);   
+        await fetch(`http://localhost:5000/api/application/applyjob/${id}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        console.log(jobid);
+    }
+    useEffect(() => {
+        fetchalljobs();
+    }, [])
+
     return (
         <div className="container">
 
@@ -22,11 +56,11 @@ export default function Content() {
                     <div className="col-lg-10 mx-auto">
                         <div className="career-search mb-60">
 
-                            <form action="#" className="career-form mb-60">
+                            {/* <form action="#" className="career-form mb-60">
                                 <div className="row">
                                     <div className="col-md-6 col-lg-3 my-3">
                                         <div className="input-group position-relative">
-                                            <input type="text" className="form-control" placeholder="Enter Your Keywords" id="keywords"/>
+                                            <input type="text" className="form-control" placeholder="Enter Your Keywords" id="keywords" />
                                         </div>
                                     </div>
                                     <div className="col-md-6 col-lg-3 my-3">
@@ -55,115 +89,88 @@ export default function Content() {
                                         </button>
                                     </div>
                                 </div>
-                            </form>
+                            </form> */}
 
                             <div className="filter-result">
-                                <p className="mb-30 ff-montserrat">Total Job Openings : 89</p>
+                                {/* <p className="mb-30 ff-montserrat">Total Job Openings : 89</p> */}
 
-                                <div className="job-box d-md-flex align-items-center justify-content-between mb-30">
-                                    <div className="job-left my-4 d-md-flex align-items-center flex-wrap">
-                                        <div className="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex">
-                                            FD
-                                        </div>
-                                        <div className="job-content">
-                                            <h5 className="text-center text-md-left" Style="overflow:hidden;">Front End Developer</h5>
-                                            <ul className="d-md-flex flex-wrap text-capitalize ff-open-sans">
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-pin mr-2"></i> Los Angeles
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-money mr-2"></i> 2500-3500/pm
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-time mr-2"></i> Full Time
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="job-right my-4 flex-shrink-0">
-                                        <a href="/" className="btn d-block w-100 d-sm-inline-block btn-light">Apply now</a>
-                                    </div>
-                                </div>
+                                {jobs.length > 0 && (
+                                    <ul>
+                                        {jobs.map(job => (
+                                            <>
 
-                                <div className="job-box d-md-flex align-items-center justify-content-between mb-30">
-                                    <div className="job-left my-4 d-md-flex align-items-center flex-wrap">
-                                        <div className="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex">
-                                            UX
-                                        </div>
-                                        <div className="job-content">
-                                            <h5 className="text-center text-md-left" Style="overflow:hidden;">Ui/Ux Developer</h5>
-                                            <ul className="d-md-flex flex-wrap text-capitalize ff-open-sans">
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-pin mr-2"></i> Los Angeles
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-money mr-2"></i> 2500-3500/pm
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-time mr-2"></i> Full Time
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="job-right my-4 flex-shrink-0">
-                                        <a href="/" className="btn d-block w-100 d-sm-inline-block btn-light">Apply now</a>
-                                    </div>
-                                </div>
+                                                <div className="job-box d-md-flex align-items-center justify-content-between mb-30">
+                                                    <div className="job-left my-4 d-md-flex align-items-center flex-wrap">
+                                                        {/* <div className="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex">
+                                                                FD
+                                                            </div> */}
+                                                        <div className="job-content">
+                                                            <h5 className="text-left" Style="overflow:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{job.title}</h5>
+                                                            <ul className="">
+                                                                <li className="mr-md-4">
+                                                                    <b>Discription: </b> {job.description}
+                                                                </li>
+                                                                <li className="mr-md-4">
+                                                                    <i className=""></i>
+                                                                    <b>Salary: </b>{job.salary} &#8377;
+                                                                </li>
+                                                                <li className="mr-md-4">
+                                                                    <i className=""></i>
+                                                                    <b>Job Type: </b>{job.jobType}
+                                                                </li>
+                                                                <li className="mr-md-4">
+                                                                    <i className=""></i>
+                                                                    <b>Skills: </b>{job.skills}
+                                                                </li>
+                                                                <li className="mr-md-4">
+                                                                    <i className=""></i>
+                                                                    <b>Duration: </b>{job.duration}
+                                                                </li>
+                                                                <li className="mr-md-4">
+                                                                    <i className=""></i>
+                                                                    <b>Deadline: </b>{job.deadline}
+                                                                </li>
+                                                                <li className="mr-md-4">
+                                                                    <i className=""></i>
+                                                                    <b>Applicants: </b>{job.applicants}
+                                                                </li>
+                                                                <li className="mr-md-4">
+                                                                    <i className=""></i>
+                                                                    <b>Position: </b>{job.position}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:120px;">
+                                                        <button className={`btn d-block w-100 d-sm-inline-block ${ApplyButtonColor}`} onClick={() => { ApplyJobs(job._id) }}>
+                                                            {(
+                                                                () => {
+                                                                    if (job._id === jobid) {
+                                                                        
+                                                                        return "Applied"
 
-                                <div className="job-box d-md-flex align-items-center justify-content-between mb-30">
-                                    <div className="job-left my-4 d-md-flex align-items-center flex-wrap">
-                                        <div className="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex">
-                                            GD
-                                        </div>
-                                        <div className="job-content">
-                                            <h5 className="text-center text-md-left" Style="overflow:hidden;">Graphic Designer</h5>
-                                            <ul className="d-md-flex flex-wrap text-capitalize ff-open-sans">
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-pin mr-2"></i> Los Angeles
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-money mr-2"></i> 2500-3500/pm
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-time mr-2"></i> Full Time
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="job-right my-4 flex-shrink-0">
-                                        <a href="/" className="btn d-block w-100 d-sm-inline-block btn-light">Apply now</a>
-                                    </div>
-                                </div>
+                                                                    }
+                                                                    else {
+                                                                        return "Apply Now"
 
-                                <div className="job-box d-md-flex align-items-center justify-content-between mb-30">
-                                    <div className="job-left my-4 d-md-flex align-items-center flex-wrap">
-                                        <div className="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex">
-                                            JS
-                                        </div>
-                                        <div className="job-content">
-                                            <h5 className="text-center text-md-left" Style="overflow:hidden;">Javascript Developer</h5>
-                                            <ul className="d-md-flex flex-wrap text-capitalize ff-open-sans">
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-pin mr-2"></i> Los Angeles
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-money mr-2"></i> 2500-3500/pm
-                                                </li>
-                                                <li className="mr-md-4">
-                                                    <i className="zmdi zmdi-time mr-2"></i> Full Time
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="job-right my-4 flex-shrink-0">
-                                        <a href="/" className="btn d-block w-100 d-sm-inline-block btn-light">Apply now</a>
-                                    </div>
-                                </div>
+                                                                    }
+                                                                }
+                                                            )()}
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </>
+                                        ))}
+                                    </ul>
+
+                                )}
+
 
                             </div>
                         </div>
 
-                       
+
                         <nav aria-label="Page navigation">
                             <ul className="pagination pagination-reset justify-content-center">
                                 <li className="page-item disabled">
@@ -183,7 +190,7 @@ export default function Content() {
                                 </li>
                             </ul>
                         </nav>
-                       
+
                     </div>
                 </div>
 

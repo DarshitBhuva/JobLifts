@@ -132,4 +132,18 @@ router.delete('/deletejob/:id', fetchuser , async(req, res)=>{
         res.status(500).send("Internal Server Error");
     }
 })
+
+// Fetch All the Jobs To display to users
+
+router.post('/fetchalljobs', async(req, res)=>{
+    try {
+        const jobs = await Job.find();
+        res.json(jobs);
+
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(500).send("Internal server error");
+    }
+})
 module.exports = router
