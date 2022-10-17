@@ -115,8 +115,10 @@ router.post('/login', [
         const authToken = jwt.sign(data, JWT_SECRET);
         //res.json({authToken});
         localStorage.setItem('token', authToken);
+        localStorage.setItem('userType', user.type);
         req.body.authtoken = authToken;
-        res.json({'success' : req.body.authtoken});
+        req.body.userType = user.type;
+        res.json({'success' : req.body.authtoken, 'userType' : user.type});
     }
     catch(error){
         console.error(error.message);

@@ -1,6 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// import { LocalStorage } from 'node-localstorage';
+// var localStorage = new LocalStorage("./backand/scratch");
 // const userIsInactive = useFakeInactiveUser();
 
 
@@ -21,9 +23,22 @@ export default function Signin() {
 
         const json = await response.json();
         console.log(json);
+
+        localStorage.setItem('userType', json.userType);
+        console.log(localStorage.getItem('userType'));
+
         if(json.success){
             
-            navigate("/fetchjobs")
+            if(json.userType === 'Recruiter')
+            {
+                navigate("/fetchjobs");
+            }
+            else if(json.userType === 'Applicant')
+            {
+                navigate("/");
+            }
+
+            
         }
         else{
             alert("Invalid Credentials");
