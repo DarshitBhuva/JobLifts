@@ -10,7 +10,15 @@ const ApplicationSchema = new Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref : 'job'
     },
+    recruiterId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref : 'job'
+    },
 
+    applicantName:{
+        type:String,
+        required:true
+    },
     title:{
         type:String,
         required: true,

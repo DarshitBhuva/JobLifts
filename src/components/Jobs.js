@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react'
 import { useEffect } from 'react';
+import {useNavigate } from 'react-router-dom';
 
 
 export default function Jobs() {
-
+    const navigate = useNavigate();
+    
     const [jobs, setJobs] = useState([]);
     const fetchalljobs = async () => {
         await fetch('http://localhost:5000/api/jobs/fetchjobs', {
@@ -22,8 +24,17 @@ export default function Jobs() {
         // console.log(json);
     }
 
+    const verifyUser = () => {
+        
+        if(localStorage.getItem('userType') === 'Applicant')
+        {
+            navigate("/");
+        }
+    }
+
     useEffect(() => {
-        fetchalljobs()
+        verifyUser();
+        fetchalljobs();
     }, [])
 
     const deletejob = async (id) => {

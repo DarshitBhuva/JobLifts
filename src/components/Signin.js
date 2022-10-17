@@ -25,7 +25,8 @@ export default function Signin() {
         console.log(json);
 
         localStorage.setItem('userType', json.userType);
-        console.log(localStorage.getItem('userType'));
+        localStorage.setItem('email', json.email);
+        // console.log(localStorage.getItem('userType'));
 
         if(json.success){
             

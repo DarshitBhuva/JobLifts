@@ -118,7 +118,7 @@ router.post('/login', [
         localStorage.setItem('userType', user.type);
         req.body.authtoken = authToken;
         req.body.userType = user.type;
-        res.json({'success' : req.body.authtoken, 'userType' : user.type});
+        res.json({'success' : req.body.authtoken, 'userType' : user.type, 'email':user.email});
     }
     catch(error){
         console.error(error.message);
