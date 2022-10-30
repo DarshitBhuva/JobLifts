@@ -24,6 +24,7 @@ export default function Signin() {
         const json = await response.json();
         console.log(json);
 
+        localStorage.setItem('token', json.success);
         localStorage.setItem('userType', json.userType);
         localStorage.setItem('email', json.email);
         // console.log(localStorage.getItem('userType'));

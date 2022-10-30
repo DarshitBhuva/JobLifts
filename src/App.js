@@ -8,6 +8,7 @@ import Signin from './components/Signin';
 import Signup from './components/Signup';
 import Header from './components/Header';
 import Profile from './components/Profile';
+import Cart from './components/Cart';
 import RecruiterProfile from './components/RecruiterProfile';
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
@@ -39,6 +40,8 @@ function App() {
           {localStorage.getItem('userType') === "Applicant" && <Route path="/profile" element={<Profile />} />}
           {localStorage.getItem('userType') === "Recruiter" && <Route path='/profile' element={<RecruiterProfile />} />}
           {/* <Route path='/profile' element={localStorage.getItem('userType') === 'Applicant' ? <Profile /> : <RecruiterProfile />} /> */}
+
+          <Route path='/cart' element={<Cart />} />
         </Routes>
 
       </BrowserRouter>

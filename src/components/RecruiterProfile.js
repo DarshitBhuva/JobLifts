@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 export default function RecruiterProfile() {
 
   const [applications, setApplication] = useState([]);
+  const [status, setStatus] = useState("");
+
 
   const fetchAppliedJobs = async () => {
 
@@ -16,9 +18,41 @@ export default function RecruiterProfile() {
     }).then((data) => setApplication(data))
   }
 
+  const accept = async (id) => {
+
+    await fetch(`http://localhost:5000/api/application/AcceptApplication/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      }
+
+    }).then(() => {
+
+      setTimeout(() => { setStatus("Accepted") }, 2000);
+
+    })
+
+
+  }
+
+  const reject = async (id) => {
+    await fetch(`http://localhost:5000/api/application/RejectApplication/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      }
+
+    }).then(() => {
+
+      
+      setTimeout(() => { setStatus("Rejected") }, 2000);
+
+    })
+  }
+
   useEffect(() => {
     fetchAppliedJobs();
-  }, [])
+  }, [status])
 
 
   return (
@@ -76,12 +110,29 @@ export default function RecruiterProfile() {
                                     </ul>
                                   </div>
                                 </div>
-                                <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:90px;">
-                                  <button className="btn  btn-primary mx-2">Apply</button>
-                                </div>
-                                <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:90px;">
-                                  <button className="btn btn-danger mx-2">Decline</button>
-                                </div>
+                                {(
+                                  () => {
+                                    if (application.status === "Applied") {
+                                      return (<>
+                                        <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:90px;">
+                                          <button className="btn  btn-primary mx-2" onClick={() => { accept(application._id) }}>Accept</button>
+                                        </div>
+                                        <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:90px;">
+                                          <button className="btn btn-danger mx-2" onClick={() => { reject(application._id) }}>Decline</button>
+                                        </div>
+                                      </>)
+                                    }
+                                    else  if(application.status === "Accepted"){
+                                      return (<b className="job-right my-4 flex-shrink-0 text-success">{application.status}</b>)
+                                    }
+                                    else if(application.status === "Rejected")
+                                    {
+                                      return (<b className="job-right my-4 flex-shrink-0 text-danger">{application.status}</b>)
+                                    }
+                                  }
+                                )()
+                                }
+
                               </div>
                             </>
 

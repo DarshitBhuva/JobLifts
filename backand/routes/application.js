@@ -7,6 +7,7 @@ const User = require("../models/User");
 const { body, validationResult } = require('express-validator');
 
 const fetchuser = require('../middleware/fetchuser');
+const { application } = require('express');
 
 const router = express.Router();
 
@@ -74,6 +75,57 @@ router.post('/fetchAllApplications', fetchuser, async(req, res)=>{
     }
     catch (e) {
         console.log(e.message);
+        res.status(500).send("Internal server error");
+    }
+})
+
+router.post('/AcceptApplication/:id', fetchuser, async(req, res) => {
+
+    try{
+        const application = await Application.findByIdAndUpdate(req.params.id, {$set: {"status" : "Accepted"}});
+
+
+        res.json(application);
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(500).send("Internal server error");
+    }
+
+})
+
+router.post('/RejectApplication/:id', fetchuser, async(req, res) => {
+
+    try{
+        const application = await Application.findByIdAndUpdate(req.params.id, {$set: {"status" : "Rejected"}});
+
+
+        res.json(application);
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(500).send("Internal server error");
+    }
+
+})
+
+router.post('/FindStatus', fetchuser, async(req, res)=> {
+    try{
+        // const application = await Application.findOne({$and : [{'jobid' : req.params.id}, {'userid' : req.user.id}]})
+        const applications = await Application.find({'userid' : req.user.id});
+
+        // console.log(applications);
+        // res.json({'status': application.status});
+        // res.json(application);
+        let obj = {}
+        applications.map(application => {
+            obj[application.jobid] = application.status;
+        })
+
+        res.json(obj);
+    }
+    catch (e) {
+        res.json({'status' : ""})
         res.status(500).send("Internal server error");
     }
 })

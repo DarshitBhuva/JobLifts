@@ -2,14 +2,13 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
 
-export default function Content() {
+export default function Cart() {
     const [jobs, setJobs] = useState([]);
     const [status, setStatus] = useState({});
 
+    const fetchallcart = async () => {
 
-    const fetchalljobs = async () => {
-
-        await fetch('http://localhost:5000/api/jobs/fetchalljobs', {
+        await fetch('http://localhost:5000/api/cart/fetchAllCarts', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
@@ -18,6 +17,7 @@ export default function Content() {
             return response.json();
         }).then((data) => setJobs(data))
     }
+
 
     //const [ApplyButtonColor, SetApplyButtonColor] = useState("btn-primary");
     // const [ApplyButttonText, SetApplyButtonText] = useState("Apply Now");
@@ -41,7 +41,7 @@ export default function Content() {
 
     const checkStatus = async () => {
 
-        const response = await fetch("http://localhost:5000/api/application/FindStatus", {
+        const response = await fetch(`http://localhost:5000/api/application/FindStatus`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -53,25 +53,21 @@ export default function Content() {
         setStatus(json);
     }
 
+    const DeleteCart = async (id, jobid) => {
 
-    const AddToCart = async (id) => {
-
-
-        await fetch(`http://localhost:5000/api/cart/AddToCart/${id}`, {
-            method: "POST",
+        const response = await fetch(`http://localhost:5000/api/cart/deleteCart/${id}`, {
+            method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
             }
         })
 
-        setTimeout(() => { SetJobId(id) }, 1500);
+        setTimeout(() => { SetJobId(jobid) }, 1500);
 
-        //console.log(jobid);
     }
-
     useEffect(() => {
         checkStatus();
-        fetchalljobs();
+        fetchallcart();
     }, [jobid])
 
     return (
@@ -86,7 +82,7 @@ export default function Content() {
                     <div className="col-lg-10 mx-auto mb-4">
                         <div className="section-title text-center ">
                             <h3 className="top-c-sep" Style="overflow-y: hidden;">Grow your career with us</h3>
-                            <p>Lorem ipsum dolor sit detudzdae amet, rcquisc adipiscing elit. Aenean socada commodo ligaui egets dolor. Nullam quis ante tiam sit ame orci eget erovtiu faucid.</p>
+                            {/* <p>Lorem ipsum dolor sit detudzdae amet, rcquisc adipiscing elit. Aenean socada commodo ligaui egets dolor. Nullam quis ante tiam sit ame orci eget erovtiu faucid.</p> */}
                         </div>
                     </div>
                 </div>
@@ -135,7 +131,7 @@ export default function Content() {
 
                                 {jobs.length > 0 && (
                                     <ul>
-                                        {jobs.map(job => (
+                                        {jobs.map(cart => (
                                             <>
 
                                                 <div className="job-box d-md-flex align-items-center justify-content-between mb-30">
@@ -144,58 +140,51 @@ export default function Content() {
                                                                 FD
                                                             </div> */}
                                                         <div className="job-content">
-                                                            <h5 className="text-left" Style="overflow:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{job.title}</h5>
+                                                            <h5 className="text-left" Style="overflow:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{cart.title}</h5>
                                                             <ul className="">
                                                                 <li className="mr-md-4">
-                                                                    <b>Discription: </b> {job.description}
+                                                                    <b>Discription: </b> {cart.description}
                                                                 </li>
                                                                 <li className="mr-md-4">
                                                                     <i className=""></i>
-                                                                    <b>Salary: </b>{job.salary} &#8377;
+                                                                    <b>Salary: </b>{cart.salary} &#8377;
                                                                 </li>
                                                                 <li className="mr-md-4">
                                                                     <i className=""></i>
-                                                                    <b>Job Type: </b>{job.jobType}
+                                                                    <b>Job Type: </b>{cart.jobType}
                                                                 </li>
                                                                 <li className="mr-md-4">
                                                                     <i className=""></i>
-                                                                    <b>Skills: </b>{job.skills}
+                                                                    <b>Skills: </b>{cart.skills}
                                                                 </li>
                                                                 <li className="mr-md-4">
                                                                     <i className=""></i>
-                                                                    <b>Duration: </b>{job.duration}
+                                                                    <b>Duration: </b>{cart.duration}
                                                                 </li>
-                                                                <li className="mr-md-4">
+
+                                                                {/* <li className="mr-md-4">
                                                                     <i className=""></i>
                                                                     <b>Deadline: </b>{job.deadline}
-                                                                </li>
-                                                                <li className="mr-md-4">
-                                                                    <i className=""></i>
-                                                                    <b>Applicants: </b>{job.applicants}
-                                                                </li>
-                                                                <li className="mr-md-4">
-                                                                    <i className=""></i>
-                                                                    <b>Position: </b>{job.position}
-                                                                </li>
+                                                                </li> */}
+
                                                             </ul>
                                                         </div>
                                                     </div>
 
-                                                    <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:120px;">
+                                                    <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:90px;">
 
                                                         {(
                                                             () => {
-                                                                if (job._id in status) {
+                                                                if (cart.jobid in status) {
                                                                     //console.log(status);
                                                                     return (<>
-                                                                        <b className="job-right my-4 flex-shrink-0 text-success">{status[job._id]}</b>
-                                                                        <i className="fa fa-bookmark-o mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => { AddToCart(job._id) }}></i>
+                                                                        <b className="job-right my-4 flex-shrink-0 text-success">{status[cart.jobid]}</b>
+                                                                        <button class="btn btn-primary fa fa-trash-o mx-5" aria-hidden="true" onClick={() => {DeleteCart(cart._id, cart.jobid)}}></button>
                                                                     </>)
                                                                 }
                                                                 else {
-                                                                    return (<>
-                                                                        <button className='btn btn-primary d-sm-inline-block' onClick={() => { ApplyJobs(job._id) }}>Apply Now</button>
-                                                                        <i className="fa fa-bookmark-o mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => {AddToCart(job._id)}}></i>
+                                                                    return (<><button className='btn btn-primary d-sm-inline-block' onClick={() => { ApplyJobs(cart.jobid) }}>Apply Now</button>
+                                                                        <button class="btn btn-primary fa fa-trash-o mx-5" aria-hidden="true" onClick={() => {DeleteCart(cart._id, cart.jobid)}}></button>
                                                                     </>)
                                                                 }
                                                             }
