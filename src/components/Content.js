@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 export default function Content() {
     const [jobs, setJobs] = useState([]);
     const [status, setStatus] = useState({});
-
+    const [savedStatus, setsavedStatus] = useState({});
 
     const fetchalljobs = async () => {
 
@@ -53,6 +53,31 @@ export default function Content() {
         setStatus(json);
     }
 
+    const checkSavedStatus = async () => {
+        const response = await fetch("http://localhost:5000/api/cart/savedStatus", {
+            method : "POST",
+            headers:{
+                'Content-Type' : 'application/json'
+            }
+        })
+
+        const json = await response.json();
+        setsavedStatus(json);
+    }
+
+    const DeleteCart = async (id) => {
+
+        const response = await fetch(`http://localhost:5000/api/cart/deleteCart/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        setTimeout(() => { SetJobId(id) }, 500);
+
+    }
+
 
     const AddToCart = async (id) => {
 
@@ -64,13 +89,14 @@ export default function Content() {
             }
         })
 
-        setTimeout(() => { SetJobId(id) }, 1500);
+        setTimeout(() => { SetJobId(id) }, 500);
 
         //console.log(jobid);
     }
 
     useEffect(() => {
         checkStatus();
+        checkSavedStatus();
         fetchalljobs();
     }, [jobid])
 
@@ -187,16 +213,38 @@ export default function Content() {
                                                             () => {
                                                                 if (job._id in status) {
                                                                     //console.log(status);
-                                                                    return (<>
-                                                                        <b className="job-right my-4 flex-shrink-0 text-success">{status[job._id]}</b>
-                                                                        <i className="fa fa-bookmark-o mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => { AddToCart(job._id) }}></i>
-                                                                    </>)
+                                                                    if(job._id in savedStatus)
+                                                                    {
+                                                                        return (<>
+                                                                            <b className="job-right my-4 flex-shrink-0 text-success">{status[job._id]}</b>
+                                                                            <i className="fa fa-bookmark mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => { DeleteCart(job._id) }}></i>
+                                                                        </>)
+                                                                    }
+                                                                    else{
+                                                                        return (<>
+                                                                            <b className="job-right my-4 flex-shrink-0 text-success">{status[job._id]}</b>
+                                                                            <i className="fa fa-bookmark-o mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => { AddToCart(job._id) }}></i>
+                                                                        </>)
+                                                                    }
+                                                                    
                                                                 }
                                                                 else {
-                                                                    return (<>
-                                                                        <button className='btn btn-primary d-sm-inline-block' onClick={() => { ApplyJobs(job._id) }}>Apply Now</button>
-                                                                        <i className="fa fa-bookmark-o mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => {AddToCart(job._id)}}></i>
-                                                                    </>)
+
+                                                                    if(job._id in savedStatus)
+                                                                    {
+                                                                        return (<>
+                                                                            <button className='btn btn-primary d-sm-inline-block' onClick={() => { ApplyJobs(job._id) }}>Apply Now</button>
+                                                                            <i className="fa fa-bookmark mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => {DeleteCart(job._id)}}></i>
+                                                                        </>)
+                                                                    }
+                                                                    else{
+                                                                        return (<>
+                                                                            <button className='btn btn-primary d-sm-inline-block' onClick={() => { ApplyJobs(job._id) }}>Apply Now</button>
+                                                                            <i className="fa fa-bookmark-o mx-5" aria-hidden="true" Style="font-size: 20px;" onClick={() => {AddToCart(job._id)}}></i>
+                                                                        </>)
+                                                                    }
+
+                                                                   
                                                                 }
                                                             }
                                                         )()}

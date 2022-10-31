@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useNavigate } from 'react-router-dom'
 
 
 export default function Navbar(props) {
 
+    const navigate = useNavigate();
     const [isLoggedin, setIsLoggedIn] = useState(true);
     const [email, setEmail] = useState(localStorage.getItem("email"));
 
@@ -11,22 +12,16 @@ export default function Navbar(props) {
         console.log(localStorage.getItem("token"));
         localStorage.removeItem('token');
         localStorage.removeItem('email');
+
+      
         setIsLoggedIn(false);
-    }
 
-    const login = () => {
-        
-            console.log("hello");
-        
-            setIsLoggedIn(true);
-        
-
-    }
-
-    useEffect(()=> {
        
-        
-    }, [isLoggedin, email]);
+        navigate("/");
+
+
+    }
+
 
     return (
         <div>
@@ -42,9 +37,15 @@ export default function Navbar(props) {
                                 <li className="nav-item">
                                     <NavLink className="nav-link" to="/">Home</NavLink>
                                 </li>
-                                <li className="nav-item">
+                                {/* <li className="nav-item">
                                     <a className="nav-link" href="jobs.html">Jobs</a>
-                                </li>
+                                </li> */}
+                                {localStorage.getItem('userType') === "Recruiter" ?
+                                (
+                                    <NavLink className="nav-link" to="/fetchjobs">Jobs</NavLink>
+                                ) : (
+                                    <p></p>
+                                ) }
 
                                 <li className="nav-item">
                                     <a className="nav-link" href='/profile'>Profile</a>
@@ -59,7 +60,7 @@ export default function Navbar(props) {
                                 <a href="/" className="btn btn-sm btn-primary mt-2 mx-2" Style="height: 32px; width: 30%;">Search</a>
                             </form>
                             
-                            {!isLoggedin ? (
+                            {/* {!isLoggedin ? (
                                 <>
                                    
                                     <NavLink className="btn btn-sm btn-primary mx-2" to="/signin">Sign in</NavLink>
@@ -71,7 +72,8 @@ export default function Navbar(props) {
                                     
                                     <button className="btn btn-sm btn-primary mx-2" onClick={logout}>Logout</button>
                                 </>
-                            )}
+                            )} */}
+                             <button className="btn btn-sm btn-primary mx-2" onClick={logout}>Logout</button>
                            
                             
                             <p></p>

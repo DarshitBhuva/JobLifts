@@ -1,12 +1,12 @@
 
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-import {useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 
 export default function Jobs() {
     const navigate = useNavigate();
-    
+
     const [jobs, setJobs] = useState([]);
     const fetchalljobs = async () => {
         await fetch('http://localhost:5000/api/jobs/fetchjobs', {
@@ -25,9 +25,8 @@ export default function Jobs() {
     }
 
     const verifyUser = () => {
-        
-        if(localStorage.getItem('userType') === 'Applicant')
-        {
+
+        if (localStorage.getItem('userType') === 'Applicant') {
             navigate("/");
         }
     }
@@ -39,16 +38,16 @@ export default function Jobs() {
 
     const deletejob = async (id) => {
         await fetch(`http://localhost:5000/api/jobs/deletejob/${id}`, {
-            method : "DELETE",
+            method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
             }
         }).then(() => {
             setTimeout(fetchalljobs, 2000);
-            
+
         })
     }
-    
+
     return (
         <>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
@@ -73,7 +72,10 @@ export default function Jobs() {
             )} */}
             <div className="container">
 
-                <h1 className="text-center mt-5" Style="overflow-y: hidden;">Posted Jobs</h1>
+                <div className="row">
+                    <h1 className="text-center mt-5" Style="overflow-y: hidden;">Posted Jobs</h1>
+                    <NavLink to="/addnewjob" className='btn btn-primary mt-5' Style="display:inline-block;margin:auto;width:10%;">Add New Job</NavLink>
+                </div>
 
                 <link rel="Stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
 
@@ -133,7 +135,7 @@ export default function Jobs() {
                                         <ul>
                                             {jobs.map(job => (
                                                 <>
-                                        
+
                                                     <div className="job-box d-md-flex align-items-center justify-content-between mb-30">
                                                         <div className="job-left my-4 d-md-flex align-items-center flex-wrap">
                                                             {/* <div className="img-holder mr-md-4 mb-md-0 mb-4 mx-auto mx-md-0 d-md-none d-lg-flex">
@@ -143,7 +145,7 @@ export default function Jobs() {
                                                                 <h5 className="text-left" Style="overflow:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{job.title}</h5>
                                                                 <ul className="">
                                                                     <li className="mr-md-4">
-                                                                         <b>Discription: </b> {job.description}
+                                                                        <b>Discription: </b> {job.description}
                                                                     </li>
                                                                     <li className="mr-md-4">
                                                                         <i className=""></i>
@@ -177,7 +179,7 @@ export default function Jobs() {
                                                             </div>
                                                         </div>
                                                         <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:120px;">
-                                                            <button className="btn d-block w-100 d-sm-inline-block btn-primary" onClick={() => {deletejob(job._id)}}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                            <button className="btn d-block w-100 d-sm-inline-block btn-primary" onClick={() => { deletejob(job._id) }}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                                         </div>
                                                     </div>
                                                 </>

@@ -10,6 +10,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const fetchuser = require('../middleware/fetchuser');
 var jwt = require('jsonwebtoken');
+const { application } = require('express');
 
 const JWT_SECRET = 'Darshitisagoodboy';
 
@@ -59,10 +60,31 @@ router.post('/fetchAllCarts', fetchuser, async (req, res)=>{
     }
 })
 
+router.post('/savedStatus', fetchuser, async(req, res)=>{
+    try{
+
+        const carts = await Cart.find({'userid' : req.user.id});
+
+        let obj = {};
+        carts.map(cart => {
+            obj[cart.jobid] = true;
+        })
+
+        res.json(obj);
+
+    }
+    catch(e){
+        res.json({'status' : ""})
+        res.status(500).send("Internal server error");
+    }
+})
+
+// Delete Cart
 router.delete('/deleteCart/:id', fetchuser, async(req, res)=>{
     try{
 
         const cart = await Cart.findById(req.params.id);
+        // const cart = await Cart.find({$and : [{'userid': req.user.id}, {'jobid' : req.params.id}]});
 
         if(cart.userid.toString() != req.user.id)
         {
@@ -70,6 +92,8 @@ router.delete('/deleteCart/:id', fetchuser, async(req, res)=>{
         }
 
         cart = await Cart.findByIdAndDelete(req.params.id);
+        // cart = await Cart.delete({$and: [{'userid': req.user.id},{'jobid' : req.params.id}]});
+        
         res.json({"Success": "Job has been Deleted Successfully", cart: cart});
 
     }

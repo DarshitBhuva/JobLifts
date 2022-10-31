@@ -59,13 +59,13 @@ export default function RecruiterProfile() {
     <div>
       <div className="container">
 
-        <h1 className="text-center mt-5" Style="overflow-y: hidden;">All Appications</h1>
-
+        <h1 className="text-center mt-5" Style="overflow-y: hidden;">All Appications </h1>
+       
         <link rel="Stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
 
         <div className="container">
 
-
+        
           <div className="row">
             <div className="col-lg-10 mx-auto">
               <div className="career-search mb-60">

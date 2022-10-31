@@ -10,7 +10,8 @@ import Header from './components/Header';
 import Profile from './components/Profile';
 import Cart from './components/Cart';
 import RecruiterProfile from './components/RecruiterProfile';
-import React, { useState } from 'react';
+import AddJob from './components/AddJob';
+import React from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import Jobs from './components/Jobs';
 
@@ -27,15 +28,20 @@ function App() {
 
 
       <BrowserRouter>
-        <Navbar title="JobLifts" />
+
+        {
+          localStorage.getItem('email') !== null? (<Navbar title="JobLifts" />) : (<p></p>)
+        }
+
+        
         <Routes>
 
 
-          <Route exact path="/" element={<Header />} />
+          <Route exact path="/home" element={<Header />} />
           <Route exact path="/signup" element={<Signup />} />
-          <Route path='/signin' element={<Signin />} />
+          <Route path='/' element={<Signin />} />
 
-
+          <Route path='/addnewjob' element= {<AddJob />}/>
           <Route path='/fetchjobs' element={<Jobs />} />
           {localStorage.getItem('userType') === "Applicant" && <Route path="/profile" element={<Profile />} />}
           {localStorage.getItem('userType') === "Recruiter" && <Route path='/profile' element={<RecruiterProfile />} />}

@@ -62,7 +62,7 @@ export default function Cart() {
             }
         })
 
-        setTimeout(() => { SetJobId(jobid) }, 1500);
+        setTimeout(() => { SetJobId(jobid) }, 500);
 
     }
     useEffect(() => {

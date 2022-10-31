@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export default function Signup() {
 
@@ -31,7 +31,7 @@ export default function Signup() {
         localStorage.setItem('email', json.email);
 
         if(json.success){
-            navigate("/");  
+            navigate("/home");  
         }
         else{
             // alert("You are Not Registered");
@@ -115,8 +115,8 @@ export default function Signup() {
                                 <div className="text-center text-lg-start mt-4 pt-2">
                                     <button type="submit" className="btn btn-primary btn-lg"
                                         Style="padding-left: 2.5rem; padding-right: 2.5rem;">Register</button>
-                                    <p className="small fw-bold mt-2 pt-1 mb-0">Already have an account? <a href="/signin"
-                                        className="link-danger">Sign in</a></p>
+                                    <p className="small fw-bold mt-2 pt-1 mb-0">Already have an account? <NavLink to="/"
+                                        className="link-danger">Sign in</NavLink></p>
                                 </div>
 
                             </form>
