@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Signin from './components/Signin';
 import Signup from './components/Signup';
-import Header from './components/Header';
+
 import Profile from './components/Profile';
 import Cart from './components/Cart';
 import RecruiterProfile from './components/RecruiterProfile';
@@ -14,6 +14,7 @@ import AddJob from './components/AddJob';
 import React from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import Jobs from './components/Jobs';
+import Content from './components/Content';
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
         <Routes>
 
 
-          <Route exact path="/home" element={<Header />} />
+          <Route exact path="/home" element={<Content />} />
           <Route exact path="/signup" element={<Signup />} />
           <Route path='/' element={<Signin />} />
 

@@ -1,8 +1,20 @@
 import React, { useState } from 'react'
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 export default function Profile() {
 
+    const navigate = useNavigate();
+
     const [applications, setApplication] = useState([]);
+
+    const isLoggedin = () => {
+
+        if (localStorage.getItem('email') === null) {
+            navigate('/');
+        }
+
+    }
 
     const fetchAppliedJobs = async () => {
 
@@ -17,6 +29,7 @@ export default function Profile() {
     }
 
     useEffect(() => {
+        isLoggedin();
         fetchAppliedJobs();
     }, [])
 

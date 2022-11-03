@@ -1,10 +1,20 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 export default function RecruiterProfile() {
+
+  const navigate = useNavigate();
 
   const [applications, setApplication] = useState([]);
   const [status, setStatus] = useState("");
 
+  const isLoggedin = () => {
+
+    if (localStorage.getItem('email') === null) {
+      navigate('/');
+    }
+
+  }
 
   const fetchAppliedJobs = async () => {
 
@@ -44,13 +54,14 @@ export default function RecruiterProfile() {
 
     }).then(() => {
 
-      
+
       setTimeout(() => { setStatus("Rejected") }, 2000);
 
     })
   }
 
   useEffect(() => {
+    isLoggedin();
     fetchAppliedJobs();
   }, [status])
 
@@ -60,12 +71,12 @@ export default function RecruiterProfile() {
       <div className="container">
 
         <h1 className="text-center mt-5" Style="overflow-y: hidden;">All Appications </h1>
-       
+
         <link rel="Stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css" integrity="sha256-3sPp8BkKUE7QyPSl6VfBByBroQbKxKG7tsusY2mhbVY=" crossorigin="anonymous" />
 
         <div className="container">
 
-        
+
           <div className="row">
             <div className="col-lg-10 mx-auto">
               <div className="career-search mb-60">
@@ -122,11 +133,10 @@ export default function RecruiterProfile() {
                                         </div>
                                       </>)
                                     }
-                                    else  if(application.status === "Accepted"){
+                                    else if (application.status === "Accepted") {
                                       return (<b className="job-right my-4 flex-shrink-0 text-success">{application.status}</b>)
                                     }
-                                    else if(application.status === "Rejected")
-                                    {
+                                    else if (application.status === "Rejected") {
                                       return (<b className="job-right my-4 flex-shrink-0 text-danger">{application.status}</b>)
                                     }
                                   }

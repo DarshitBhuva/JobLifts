@@ -1,10 +1,22 @@
 // This is Content File
 import React, { useState } from 'react'
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Cart() {
+
+    const navigate = useNavigate();
+
     const [jobs, setJobs] = useState([]);
     const [status, setStatus] = useState({});
+
+    const isLoggedin = () => {
+
+        if (localStorage.getItem('email') === null) {
+            navigate('/');
+        }
+
+    }
 
     const fetchallcart = async () => {
 
@@ -66,6 +78,7 @@ export default function Cart() {
 
     }
     useEffect(() => {
+        isLoggedin();
         checkStatus();
         fetchallcart();
     }, [jobid])
@@ -178,14 +191,22 @@ export default function Cart() {
                                                                 if (cart.jobid in status) {
                                                                     //console.log(status);
                                                                     return (<>
-                                                                        <b className="job-right my-4 flex-shrink-0 text-success">{status[cart.jobid]}</b>
-                                                                        <button class="btn btn-primary fa fa-trash-o mx-5" aria-hidden="true" onClick={() => {DeleteCart(cart._id, cart.jobid)}}></button>
+                                                                        {
+                                                                            status[cart.jobid] === "Rejected" ?
+                                                                                (<b className="job-right my-4 flex-shrink-0 text-danger">{status[cart.jobid]}</b>)
+                                                                                : (<b className="job-right my-4 flex-shrink-0 text-success">{status[cart.jobid]}</b>)
+                                                                        }
+                                                                        {/* <b className="job-right my-4 flex-shrink-0 text-success">{status[cart.jobid]}</b> */}
+                                                                        <button class="btn btn-primary fa fa-trash-o mx-5" aria-hidden="true" onClick={() => { DeleteCart(cart._id, cart.jobid) }}></button>
                                                                     </>)
                                                                 }
                                                                 else {
-                                                                    return (<><button className='btn btn-primary d-sm-inline-block' onClick={() => { ApplyJobs(cart.jobid) }}>Apply Now</button>
-                                                                        <button class="btn btn-primary fa fa-trash-o mx-5" aria-hidden="true" onClick={() => {DeleteCart(cart._id, cart.jobid)}}></button>
-                                                                    </>)
+                                                                    return (
+                                                                        <>
+
+                                                                            <button className='btn btn-primary d-sm-inline-block' onClick={() => { ApplyJobs(cart.jobid) }}>Apply Now</button>
+                                                                            <button class="btn btn-primary fa fa-trash-o mx-5" aria-hidden="true" onClick={() => { DeleteCart(cart._id, cart.jobid) }}></button>
+                                                                        </>)
                                                                 }
                                                             }
                                                         )()}

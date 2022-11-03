@@ -7,6 +7,14 @@ import { NavLink, useNavigate } from 'react-router-dom';
 export default function Jobs() {
     const navigate = useNavigate();
 
+    const isLoggedin = () => {
+
+        if (localStorage.getItem('email') === null) {
+            navigate('/');
+        }
+
+    }
+
     const [jobs, setJobs] = useState([]);
     const fetchalljobs = async () => {
         await fetch('http://localhost:5000/api/jobs/fetchjobs', {
@@ -32,6 +40,7 @@ export default function Jobs() {
     }
 
     useEffect(() => {
+        isLoggedin();
         verifyUser();
         fetchalljobs();
     }, [])

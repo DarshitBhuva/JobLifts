@@ -4,6 +4,7 @@ const LocalStorage = require('node-localStorage').LocalStorage;
 var localStorage = new LocalStorage('./scratch');
 
 const Job = require("../models/Job");
+const ApiFeatures = require("../utils/apifeatures");
 
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
@@ -145,5 +146,24 @@ router.post('/fetchalljobs', async(req, res)=>{
         console.log(e.message);
         res.status(500).send("Internal server error");
     }
+})
+
+router.post('/search', async(req, res)=>{
+
+    const apifeature = new ApiFeatures(Job.find(), req.query).search().filter();
+
+    try {
+        //const jobs = await Job.find();
+        const jobs = await apifeature.query;
+
+        console.log(jobs);
+        res.json(jobs);
+
+    }
+    catch (e) {
+        console.log(e.message);
+        res.status(500).send("Internal server error");
+    }
+
 })
 module.exports = router
