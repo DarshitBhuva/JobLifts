@@ -1,11 +1,14 @@
 
-import React, { useState } from 'react'
+import React, { useState, createContext, useContext } from 'react'
 import { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
+const context = createContext();
 
 export default function Jobs() {
     const navigate = useNavigate();
+
+
 
     const isLoggedin = () => {
 
@@ -151,7 +154,10 @@ export default function Jobs() {
                                                                 FD
                                                             </div> */}
                                                             <div className="job-content">
-                                                                <h5 className="text-left" Style="overflow:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{job.title}</h5>
+                                                                <div className="row">
+                                                                    <h5 className="text-left" Style="overflow:hidden;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{job.title}</h5>
+
+                                                                </div>
                                                                 <ul className="">
                                                                     <li className="mr-md-4">
                                                                         <b>Discription: </b> {job.description}
@@ -176,18 +182,13 @@ export default function Jobs() {
                                                                         <i className=""></i>
                                                                         <b>Deadline: </b>{job.deadline}
                                                                     </li>
-                                                                    <li className="mr-md-4">
-                                                                        <i className=""></i>
-                                                                        <b>Applicants: </b>{job.applicants}
-                                                                    </li>
-                                                                    <li className="mr-md-4">
-                                                                        <i className=""></i>
-                                                                        <b>Position: </b>{job.position}
-                                                                    </li>
+
                                                                 </ul>
                                                             </div>
                                                         </div>
-                                                        <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:120px;">
+                                                       
+                                                        <div className="row job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:90px;">
+                                                            <NavLink to={{ pathname: `/edit/${job._id}` }} className="btn btn-primary mb-2">Edit</NavLink>
                                                             <button className="btn d-block w-100 d-sm-inline-block btn-primary" onClick={() => { deletejob(job._id) }}><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                                                         </div>
                                                     </div>

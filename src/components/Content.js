@@ -129,7 +129,7 @@ export default function Content() {
         })
 
         const json = await response.json();
-        // console.log(json);
+    
 
         setJobs(json);
 
@@ -294,19 +294,19 @@ export default function Content() {
                                                                         <i className=""></i>
                                                                         <b>Deadline: </b>{job.deadline}
                                                                     </li>
-                                                                    <li className="mr-md-4">
+                                                                    {/* <li className="mr-md-4">
                                                                         <i className=""></i>
                                                                         <b>Applicants: </b>{job.applicants}
                                                                     </li>
                                                                     <li className="mr-md-4">
                                                                         <i className=""></i>
                                                                         <b>Position: </b>{job.position}
-                                                                    </li>
+                                                                    </li> */}
                                                                 </ul>
                                                             </div>
                                                         </div>
 
-                                                        <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:120px;">
+                                                        <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:10vh;">
 
                                                             {(
                                                                 () => {

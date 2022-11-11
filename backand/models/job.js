@@ -44,16 +44,16 @@ const jobSchema = new Schema({
     },
 
     // Max No. Of Applicants
-    applicants:{
-        type:Number,
-        required:true,
-    },
+    // applicants:{
+    //     type:Number,
+    //     required:true,
+    // },
 
-    // Available Position
-    position:{
-        type:Number,
-        required:true,
-    }
+    // // Available Position
+    // position:{
+    //     type:Number,
+    //     required:true,
+    // }
 })
 
 const job = mongoose.model('job', jobSchema);

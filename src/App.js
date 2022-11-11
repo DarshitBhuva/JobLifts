@@ -15,6 +15,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import Jobs from './components/Jobs';
 import Content from './components/Content';
+import Edit from './components/Edit';
 
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
           {/* <Route path='/profile' element={localStorage.getItem('userType') === 'Applicant' ? <Profile /> : <RecruiterProfile />} /> */}
 
           <Route path='/cart' element={<Cart />} />
+          <Route path='/edit/:type' element={<Edit />} />
         </Routes>
 
       </BrowserRouter>

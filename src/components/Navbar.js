@@ -58,9 +58,18 @@ export default function Navbar(props) {
                             <li className="nav-item">
                                 <NavLink className="nav-link" to='/profile'>Profile</NavLink>
                             </li>
-                            <li className="nav-item mt-1">
-                                <NavLink className="nav-link" to='/cart'><i className="fa fa-bookmark-o" aria-hidden="true"></i></NavLink>
-                            </li>
+                            {
+                                localStorage.getItem('userType') === "Applicant" ?
+                                    (
+                                        <li className="nav-item mt-1">
+                                            <NavLink className="nav-link" to='/cart'><i className="fa fa-bookmark-o" aria-hidden="true"></i></NavLink>
+                                        </li>
+                                    ) :
+                                    (
+                                        <p></p>
+                                    )
+                            }
+
                         </ul>
                         <p className='mx-5'>{localStorage.getItem("email")}</p>
                         {/* <form className="d-flex">

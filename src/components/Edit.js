@@ -1,27 +1,42 @@
 import React from 'react'
-import { useEffect } from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function AddJob() {
+export default function Edit() {
 
+    const params = useParams();
     const navigate = useNavigate();
 
+    const [job, setJob] = useState([]);
+
     const [credentials, setCredentials] = useState({ title: "", description: "", jobType: "", skills: "", duration: "", deadline: "", salary: "" })
+    const findJob = async (id) => {
+        // console.log(id);
 
-    const isLoggedin = () => {
+        await fetch(`http://localhost:5000/api/jobs/findjob/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(response => {
+            return response.json();
+        }).then(data => {
+            setJob(data);
+            setCredentials(data);
+            // setCredentials({title: job.title, description:job.description, jobType:job.jobType, skills : job.skills, duration : job.duration, deadline : job.deadline, salary : job.salary});
+        })
 
-        if (localStorage.getItem('email') === null) {
-            navigate('/');
-        }
+        
 
     }
 
-    const createJob = async (e) => {
+    const updateJob = async (e) => {
 
         e.preventDefault();
+      
 
-        const response = await fetch('http://localhost:5000/api/jobs/createjob', {
+        const response = await fetch(`http://localhost:5000/api/jobs/updatejob/${credentials._id}`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -30,9 +45,10 @@ export default function AddJob() {
             body: JSON.stringify({
                 title: credentials.title, description: credentials.description,
                 jobType: document.getElementById('jobType').value, skills: credentials.skills, duration: credentials.duration, deadline: credentials.deadline,
-                 salary: credentials.salary
+                salary: credentials.salary
             })
         })
+
 
         const json = await response.json();
 
@@ -45,12 +61,12 @@ export default function AddJob() {
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
 
-    // Runs only on First Render
     useEffect(() => {
-
-        isLoggedin();
-
+        findJob(params.type);
+        // updateJob();
     }, [])
+
+
     return (
         <>
             <section className="h-100 h-custom">
@@ -64,11 +80,11 @@ export default function AddJob() {
                                 <div className="card-body p-4 p-md-5">
                                     <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2" Style="overflow:hidden;">Create a Job</h3>
 
-                                    <form className="px-md-2" method='POST' onSubmit={createJob}>
+                                    <form className="px-md-2" method='POST' onSubmit={updateJob}>
 
                                         <div className="form-outline mb-4">
                                             <label className="form-label" for="form3Example1q"> Job Name</label>
-                                            <input type="text" name='title' onChange={onChange} id="form3Example1q" className="form-control" required />
+                                            <input type="text" name='title' value={credentials.title} onChange={onChange} id="form3Example1q" className="form-control" required />
 
                                         </div>
 
@@ -77,14 +93,14 @@ export default function AddJob() {
 
                                                 <div className="form-outline datepicker">
                                                     <label for="exampleDatepicker1" className="form-label">Salary</label>
-                                                    <input type="number" name='salary' onChange={onChange} className="form-control" id="exampleDatepicker1" required />
+                                                    <input type="number" name='salary' value={credentials.salary} onChange={onChange} className="form-control" id="exampleDatepicker1" required />
 
                                                 </div>
 
                                             </div>
                                             <div className="col-md-6  mt-0">
                                                 <label for="exampleDatepicker1" className="form-label">Job Type</label>
-                                                <select className="form-select" name='jobType' id='jobType' aria-label="Default select example" required>
+                                                <select className="form-select" name='jobType' id='jobType' value = {credentials.jobType} onChange={onChange} aria-label="Default select example" required>
                                                     <option value="" disabled selected hidden>Select Type...</option>
                                                     <option value="1">Full time</option>
                                                     <option value="2">Part time</option>
@@ -100,14 +116,14 @@ export default function AddJob() {
 
                                                 <div className="form-outline datepicker">
                                                     <label for="exampleDatepicker1" className="form-label">Duration</label>
-                                                    <input type="text" name='duration' onChange={onChange} className="form-control" id="exampleDatepicker1" placeholder="# month/year" required />
+                                                    <input type="text" name='duration' value={credentials.duration} onChange={onChange} className="form-control" id="exampleDatepicker1" placeholder="# month/year" required />
 
                                                 </div>
 
                                             </div>
                                             <div className="col-md-6  mt-0">
                                                 <label for="exampleDatepicker1" className="form-label">Deadline</label>
-                                                <input type="date" name='deadline' onChange={onChange} className="form-control" id="exampleDatepicker1" required />
+                                                <input type="date" name='deadline' value={credentials.deadline} onChange={onChange} className="form-control" id="exampleDatepicker1" required />
 
                                             </div>
                                         </div>
@@ -117,25 +133,25 @@ export default function AddJob() {
 
                                                 <div className="form-outline datepicker">
                                                     <label for="exampleDatepicker1" className="form-label">Applicants</label>
-                                                    <input type="number" name='applicants' onChange={onChange} className="form-control" id="exampleDatepicker1" required />
+                                                    <input type="number" name='applicants'   className="form-control" id="exampleDatepicker1" required />
 
                                                 </div>
 
                                             </div>
                                             <div className="col-md-6  mt-0">
                                                 <label for="exampleDatepicker1" className="form-label">Positions</label>
-                                                <input type="number" name='position' onChange={onChange} className="form-control" id="exampleDatepicker1" required />
+                                                <input type="number" name='position'  className="form-control" id="exampleDatepicker1" required />
 
                                             </div>
                                         </div> */}
 
 
 
-                                        <div className="mb-4">
+                                        <div className="mb-2">
 
                                             <div className="form-outline mb-4">
                                                 <label className="form-label" for="form3Example1q"> Skills</label>
-                                                <textarea className="form-control" name='skills' onChange={onChange} rows="3" placeholder="require skills.." required></textarea>
+                                                <textarea className="form-control" name='skills' value={credentials.skills} onChange={onChange} rows="3" placeholder="require skills.." required></textarea>
 
                                             </div>
                                         </div>
@@ -144,14 +160,14 @@ export default function AddJob() {
 
                                             <div className="form-outline mb-4">
                                                 <label className="form-label" for="form3Example1q"> Description</label>
-                                                <textarea className="form-control" name='description' onChange={onChange} rows="3" placeholder="job description.." required></textarea>
+                                                <textarea className="form-control" name='description' onChange={onChange} value={credentials.description}  rows="3" placeholder="job description.." required></textarea>
 
                                             </div>
                                         </div>
 
 
                                         <center>
-                                            <button type="submit" className="btn btn-primary" autocomplete="off">Create Job</button>
+                                            <button type="submit" className="btn btn-primary" autocomplete="off">Update Job</button>
                                         </center>
                                     </form>
 
@@ -162,6 +178,5 @@ export default function AddJob() {
                 </div>
             </section>
         </>
-
     )
 }

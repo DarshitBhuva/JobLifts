@@ -89,7 +89,7 @@ export default function Signup() {
                                 </div>
                                 <div className="form-outline mb-3">
                                     <textarea id="form3Example4" className="form-control form-control-lg"
-                                        placeholder="About Yourself" onChange={onChange} name='about'/>
+                                        placeholder="Add Your Skills" onChange={onChange} name='about'/>
                                     {/* <label className="form-label" htmlFor="form3Example4">Password</label> */}
                                 </div>
 

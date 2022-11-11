@@ -22,7 +22,6 @@ const router = express.Router();
 
 router.post('/createjob', fetchuser, [
     body('title', 'Enter a valid title').isLength({ min: 5 }),
-    body('position', 'Position must be greater than 0').isInt({ gt: 0 }),
     body('salary', 'Salary must be greater than 1000 Rs.').isInt({ gt: 1000 }),
     // body('date', 'Enter a valid date').isISO8601().toDate()
 
@@ -45,8 +44,7 @@ router.post('/createjob', fetchuser, [
             skills: req.body.skills,
             duration: req.body.duration,
             deadline: req.body.deadline,
-            applicants: req.body.applicants,
-            position: req.body.position
+           
 
         })
 
@@ -79,17 +77,29 @@ router.post('/fetchjobs', fetchuser, async (req, res) => {
 router.post('/updatejob/:id', fetchuser, async (req, res) => {
 
     try {
-        const { title, description, jobType, duration, deadline, position, salary } = req.body;
+        const { title, description,salary, jobType,skills, duration, deadline } = req.body;
 
         const newJob = {};
 
         if (title) { newJob.title = title };
         if (description) { newJob.description = description };
+        if (salary) { newJob.salary = salary };
         if (jobType) { newJob.jobType = jobType };
+        if(skills){newJob.skills = skills};
         if (duration) { newJob.duration = duration };
         if (deadline) { newJob.deadline = deadline };
-        if (position) { newJob.position = position };
-        if (salary) { newJob.salary = salary };
+        
+        if(jobType == "1")
+        {
+            newJob.jobType = "Full Time";
+        }
+        else if(jobType == "2")
+        {
+            newJob.jobType = "Part Time";
+        }
+        else{
+            newJob.jobType = "Work From Home";
+        }
 
         let fetchJob = await Job.findById(req.params.id);
         if (!fetchJob) { return res.status(400).send("404 Job is Not Found") }
@@ -101,34 +111,54 @@ router.post('/updatejob/:id', fetchuser, async (req, res) => {
         fetchJob = await Job.findByIdAndUpdate(req.params.id, { $set: newJob }, { new: true });
         res.json(fetchJob);
     }
-    catch(error){
+    catch (error) {
         console.log(error.message);
         res.status(500).send("Internal server error");
     }
-    
+
 })
 
-// Delete Jobs
 
-router.delete('/deletejob/:id', fetchuser , async(req, res)=>{
+router.post('/findjob/:id', fetchuser, async (req, res)=>{
+
     try{
-
         let job = await Job.findById(req.params.id);
 
-        if(!job){
+        if (!job) {
             return res.status(404).send("Not Found");
         }
 
-        if(job.user.toString() != req.user.id)
-        {
+        if (job.user.toString() != req.user.id) {
+            return res.status(401).send("Not allowed");
+        }
+
+        res.json(job);
+    }
+    catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
+    }
+})
+// Delete Jobs
+
+router.delete('/deletejob/:id', fetchuser, async (req, res) => {
+    try {
+
+        let job = await Job.findById(req.params.id);
+
+        if (!job) {
+            return res.status(404).send("Not Found");
+        }
+
+        if (job.user.toString() != req.user.id) {
             return res.status(401).send("Not allowed");
         }
 
         job = await Job.findByIdAndDelete(req.params.id);
-        res.json({"Success": "Job has been Deleted Successfully", job: job});
+        res.json({ "Success": "Job has been Deleted Successfully", job: job });
 
     }
-    catch(error){
+    catch (error) {
         console.error(error.message);
         res.status(500).send("Internal Server Error");
     }
@@ -136,7 +166,7 @@ router.delete('/deletejob/:id', fetchuser , async(req, res)=>{
 
 // Fetch All the Jobs To display to users
 
-router.post('/fetchalljobs', async(req, res)=>{
+router.post('/fetchalljobs', async (req, res) => {
     try {
         const jobs = await Job.find();
         res.json(jobs);
@@ -148,7 +178,7 @@ router.post('/fetchalljobs', async(req, res)=>{
     }
 })
 
-router.post('/search', async(req, res)=>{
+router.post('/search', async (req, res) => {
 
     const apifeature = new ApiFeatures(Job.find(), req.query).search().filter();
 
@@ -156,7 +186,7 @@ router.post('/search', async(req, res)=>{
         //const jobs = await Job.find();
         const jobs = await apifeature.query;
 
-        console.log(jobs);
+
         res.json(jobs);
 
     }

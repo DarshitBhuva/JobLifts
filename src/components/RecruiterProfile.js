@@ -157,7 +157,7 @@ export default function RecruiterProfile() {
 
                               <div className="job-content">
 
-                                You didn't Apply Any Jobs
+                                You didn't get any application
                               </div>
                             </div>
                             {/* <div className="job-right my-4 flex-shrink-0" Style="position:relative; right:0px; top:120px;">
